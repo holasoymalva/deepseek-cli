@@ -1,9 +1,5 @@
 # DeepSeek CLI
 
-[![DeepSeek CLI CI](https://github.com/your-username/deepseek-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/deepseek-cli/actions/workflows/ci.yml)
-
-![DeepSeek CLI Screenshot](./docs/assets/deepseek-screenshot.png)
-
 This repository contains the DeepSeek CLI, a command-line AI coding assistant that leverages the powerful DeepSeek Coder models to accelerate your development workflows and enhance your coding experience.
 
 With the DeepSeek CLI you can:
