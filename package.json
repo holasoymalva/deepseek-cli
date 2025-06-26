@@ -1,18 +1,49 @@
 {
-  "name": "deepseek-cli",
+  "name": "run-deepseek-cli",
   "version": "0.1.0",
-  "description": "MVP - AI coding assistant CLI powered by DeepSeek",
+  "description": "AI-powered coding assistant CLI using DeepSeek models",
   "main": "dist/index.js",
   "bin": {
-    "deepseek": "./dist/index.js"
+    "deepseek-cli": "./dist/index.js"
   },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "type-check": "tsc --noEmit"
   },
-  "keywords": ["cli", "deepseek", "ai", "coding-assistant"],
+  "keywords": [
+    "cli",
+    "deepseek",
+    "ai",
+    "coding-assistant",
+    "code-generation",
+    "developer-tools",
+    "command-line"
+  ],
+  "author": "Your Name <your.email@example.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/holasoymalva/deepseek-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/holasoymalva/deepseek-cli/issues"
+  },
+  "homepage": "https://github.com/holasoymalva/deepseek-cli#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "axios": "^1.6.0",
     "chalk": "^4.1.2",

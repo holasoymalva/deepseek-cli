@@ -1,0 +1,32 @@
+# Source files
+src/
+*.ts
+!dist/**/*.d.ts
+
+# Config files
+tsconfig.json
+.env
+.env.example
+
+# Development files
+node_modules/
+*.log
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+
+# Test files
+tests/
+coverage/
+*.test.js
+*.spec.js
+
+# Documentation source
+docs/
+
+# Other
+.DS_Store
+*.swp

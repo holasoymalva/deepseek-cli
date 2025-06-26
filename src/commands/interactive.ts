@@ -9,7 +9,7 @@ export async function interactiveCommand(config: Config): Promise<void> {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: chalk.green('deepseek> ')
+    prompt: chalk.green('deepseek-cli > ')
   });
 
   rl.on('line', async (input) => {

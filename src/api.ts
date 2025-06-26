@@ -27,17 +27,22 @@ export class DeepSeekAPI {
           headers: {
             'Authorization': `Bearer ${this.config.apiKey}`,
             'Content-Type': 'application/json'
-          }
+          },
+          timeout: 30000  // 30 segundos
         }
       );
 
       return response.data.choices[0].message.content;
     } catch (error: any) {
       if (error.response?.status === 401) {
-        throw new Error('Invalid API key');
+        throw new Error('Invalid API key. Please check your DEEPSEEK_API_KEY.');
       }
       if (error.response?.status === 429) {
-        throw new Error('Rate limit exceeded');
+        throw new Error('Rate limit exceeded. Please try again later.');
+      }
+      if (error.response?.status === 400) {
+        console.error('API Error Details:', error.response?.data);
+        throw new Error(`Bad request: ${error.response?.data?.error?.message || 'Invalid request format'}`);
       }
       throw new Error(`API error: ${error.message}`);
     }
