@@ -1,4 +1,10 @@
 # DeepSeek CLI
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![npm version](https://badge.fury.io/js/testdream.svg)](https://www.npmjs.com/package/run-deepseek-cli)
+[![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
+
+![image](https://github.com/user-attachments/assets/5686866b-a841-4303-b7c4-c2c437816644)
+
 
 This repository contains the DeepSeek CLI, a command-line AI coding assistant that leverages the powerful DeepSeek Coder models to accelerate your development workflows and enhance your coding experience.
 
