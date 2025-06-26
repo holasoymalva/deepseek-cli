@@ -372,9 +372,8 @@ If you use this tool in your research or projects, please cite:
 
 ## Contact & Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/deepseek-cli/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/deepseek-cli/discussions)
-- **Email**: your-email@example.com
+- **Issues**: [GitHub Issues](https://github.com/holasoymalva/deepseek-cli/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/holasoymalva/deepseek-cli/discussions)
 - **DeepSeek Support**: service@deepseek.com
 
 ## Acknowledgments
