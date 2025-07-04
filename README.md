@@ -24,7 +24,7 @@ With the DeepSeek CLI you can:
 2. **Install the CLI:** Install globally using npm:
 
    ```bash
-   npm install -g deepseek-cli
+   npm install -g run-deepseek-cli
    deepseek
    ```
 
@@ -261,7 +261,7 @@ Generate common patterns and boilerplate:
 ### NPM (Recommended)
 
 ```bash
-npm install -g deepseek-cli
+npm install -g run-deepseek-cli
 ```
 
 ### Development Installation
@@ -342,7 +342,7 @@ npm update -g deepseek-cli
 
 **Permission Errors:**
 ```bash
-sudo npm install -g deepseek-cli
+sudo npm install -g run-deepseek-cli
 # Or use a Node version manager like nvm
 ```
 
