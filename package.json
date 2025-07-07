@@ -22,7 +22,8 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "publish-package": "npm run build && npm publish"
   },
   "keywords": [
     "cli",
