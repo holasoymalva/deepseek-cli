@@ -173,52 +173,6 @@ The interactive mode provides a REPL experience:
 | `deepseek-chat` | General purpose chat model | Code generation, explanations, general assistance |
 | `deepseek-reasoner` | Advanced reasoning capabilities | Complex problems, mathematical reasoning, logical analysis |
 
-## Models & Pricing Overview
-
-The prices listed are per 1 million tokens. A token, the smallest unit of text a model recognizes, can be a word, number, or punctuation mark. Billing is based on the total number of input and output tokens processed by the model.
-
-### Model Comparison
-
-This table outlines the key differences between the available models.
-
-| Feature | deepseek-chat | deepseek-reasoner |
-|---------|---------------|-------------------|
-| Full Model Name | DeepSeek-V3-0324 | DeepSeek-R1-0528 |
-| Context Length | 64K | 64K ¹ |
-| Max Output | Default: 4K<br>Maximum: 8K | Default: 32K<br>Maximum: 64K ² |
-| JSON Output | ✓ | ✓ |
-| Function Calling | ✓ | ✓ |
-| Chat Prefix Completion (Beta) | ✓ | ✓ |
-| FIM Completion (Beta) | ✓ | ✗ |
-
-### Pricing Details (per 1M Tokens)
-
-Pricing is divided into two tiers based on the time of day (UTC). The completion time of a request determines its price.
-
-#### Standard Price (UTC 00:30 - 16:30)
-| Type | deepseek-chat | deepseek-reasoner |
-|------|---------------|-------------------|
-| Input (Cache Hit) ³ | $0.07 | $0.14 |
-| Input (Cache Miss) | $0.27 | $0.55 |
-| Output ⁴ | $1.10 | $2.19 |
-
-#### Discount Price (UTC 16:30 - 00:30)
-| Type | deepseek-chat | deepseek-reasoner |
-|------|---------------|-------------------|
-| Input (Cache Hit) | $0.035 (50% OFF) | $0.035 (75% OFF) |
-| Input (Cache Miss) | $0.135 (50% OFF) | $0.135 (75% OFF) |
-| Output | $0.550 (50% OFF) | $0.550 (75% OFF) |
-
-### Explanatory Notes
-
-¹ **Context Length (deepseek-reasoner)**: The maximum input length is 64K tokens. The output length is not counted toward this context limit.
-
-² **Max Output (deepseek-reasoner)**: The max_tokens parameter limits the total output tokens for a single request, including any Chain-of-Thought (CoT) reasoning.
-
-³ **Context Caching**: For more details on cache hits and misses, please refer to the "DeepSeek Context Caching" documentation.
-
-⁴ **Output Tokens (deepseek-reasoner)**: The output token count includes all tokens from the Chain-of-Thought (CoT) process and the final answer. All output tokens are priced equally.
-
 ## Advanced Features
 
 ### Streaming Responses
@@ -236,6 +190,35 @@ See the model's reasoning process when solving complex problems:
 ```bash
 deepseek reason --show-reasoning "What is the derivative of f(x) = x^3 + 2x^2 - 5x + 7?"
 ```
+
+## Documentation Structure
+
+The documentation for the DeepSeek CLI is organized into two main folders:
+
+### API Reference Documentation (api-docs)
+
+The `api-docs` folder contains detailed API reference documentation for the DeepSeek API. This includes:
+
+- API endpoints and their parameters
+- Request and response formats
+- Authentication information
+- Error handling
+
+This documentation is essential for developers who need to understand the technical details of the API.
+
+### Feature Guides and Tutorials (deepseek-docs)
+
+The `deepseek-docs` folder contains guides and tutorials on how to use specific features of the DeepSeek API. This includes:
+
+- Function calling examples
+- JSON mode usage
+- Reasoning model examples
+- Multi-round chat examples
+- And more
+
+These guides are useful for understanding concepts and seeing examples of how to use the API features.
+
+Both sets of documentation are valuable and complement each other. When implementing a feature, it's recommended to consult both the API reference and the relevant guides.
 
 ## Installation Options
 
