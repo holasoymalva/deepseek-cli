@@ -20,15 +20,15 @@ export class DeepSeekAPI {
               content: prompt
             }
           ],
-          temperature: 0.1,
-          max_tokens: 4096
+          temperature: this.config.temperature,
+          max_tokens: this.config.maxTokens
         },
         {
           headers: {
             'Authorization': `Bearer ${this.config.apiKey}`,
             'Content-Type': 'application/json'
           },
-          timeout: 30000  // 30 segundos
+          timeout: 60000  // 60 seconds
         }
       );
 
