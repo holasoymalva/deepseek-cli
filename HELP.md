@@ -70,7 +70,29 @@ Get your API key from [DeepSeek Platform](https://platform.deepseek.com/api_keys
 | `-V, --version` | Show version number | - |
 | `-h, --help` | Show help information | - |
 
-## Available Commands
+## Available Commands and Aliases
+
+DeepSeek CLI provides both technical commands and human-friendly aliases to accommodate users with different preferences and technical backgrounds.
+
+### Core Commands
+
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `chat <prompt>` | `ask <prompt>` | Send a single prompt to DeepSeek |
+| `reason <prompt>` | `solve <prompt>` | Solve complex problems with detailed reasoning |
+| `analyze <file>` | `review <file>` | Analyze a code file for quality, bugs, and improvements |
+| `tokens <input>` | `count <input>` | Count tokens and estimate API costs |
+| `models` | `list` | List available DeepSeek models |
+
+### Task-Specific Commands
+
+| Command | Description |
+|---------|-------------|
+| `explain <topic>` | Get an explanation on a specific topic |
+| `fix <file>` | Fix issues in a code file |
+| `improve <file>` | Suggest improvements for a code file |
+| `cost <text>` | Estimate the cost of processing text |
+| `help` | Display help information |
 
 ### Interactive Mode
 
@@ -85,36 +107,42 @@ In interactive mode:
 - Type `stats` to view token usage statistics for the current session
 - Type `exit` or press Ctrl+C to quit
 
-### Chat Command
+### Chat/Ask Command
 
 Send a single prompt to DeepSeek:
 
 ```bash
 deepseek chat "Write a Python function to implement binary search"
+# OR
+deepseek ask "Write a Python function to implement binary search"
 ```
 
 Options:
 - Use `--stream` for real-time responses
 - Use `--model` to specify which model to use
 
-### Reason Command
+### Reason/Solve Command
 
 Solve complex problems with detailed reasoning:
 
 ```bash
 deepseek reason "Solve this math problem: If x + y = 10 and x * y = 24, what are the values of x and y?"
+# OR
+deepseek solve "Solve this math problem: If x + y = 10 and x * y = 24, what are the values of x and y?"
 ```
 
 Options:
 - Use `--show-reasoning` to display the model's reasoning process
 - This command automatically uses the `deepseek-reasoner` model
 
-### Analyze Command
+### Analyze/Review Command
 
 Analyze a code file for quality, bugs, and improvements:
 
 ```bash
 deepseek analyze path/to/your/file.js
+# OR
+deepseek review path/to/your/file.js
 ```
 
 This command will:
@@ -122,16 +150,20 @@ This command will:
 - Analyze the code for quality issues, bugs, and potential improvements
 - Provide suggestions for improvement
 
-### Tokens Command
+### Tokens/Count Command
 
 Count tokens and estimate API costs:
 
 ```bash
 # Count tokens in text
 deepseek tokens "Your text here"
+# OR
+deepseek count "Your text here"
 
 # Count tokens in a file
 deepseek tokens -f path/to/file.txt
+# OR
+deepseek count -f path/to/file.txt
 ```
 
 Options:
@@ -140,13 +172,64 @@ Options:
 - `-t, --time <period>`: Time period for pricing (standard or discount)
 - `-j, --json`: Output in JSON format
 
-### Models Command
+### Models/List Command
 
 List available DeepSeek models:
 
 ```bash
 deepseek models
+# OR
+deepseek list
 ```
+
+### Explain Command
+
+Get an explanation on a specific topic:
+
+```bash
+deepseek explain "async/await in JavaScript"
+```
+
+This command formats a prompt to request a clear and concise explanation of the specified topic.
+
+### Fix Command
+
+Fix issues in a code file:
+
+```bash
+deepseek fix path/to/broken/file.js
+```
+
+This command will:
+- Read the specified file
+- Identify and fix issues in the code
+- Provide the corrected version
+- Explain what was fixed and why
+
+### Improve Command
+
+Suggest improvements for a code file:
+
+```bash
+deepseek improve path/to/your/file.py
+```
+
+This command will:
+- Read the specified file
+- Suggest improvements for code quality, readability, and performance
+- Focus on best practices and modern language features
+
+### Cost Command
+
+Estimate the cost of processing text:
+
+```bash
+deepseek cost "Your text here"
+# OR
+deepseek cost -f path/to/file.txt
+```
+
+This is a simplified version of the tokens command focused specifically on cost estimation.
 
 ## Available Models
 
@@ -163,6 +246,8 @@ Get real-time responses as they're generated:
 
 ```bash
 deepseek --stream chat "Explain how quantum computing works"
+# OR
+deepseek --stream ask "Explain how quantum computing works"
 ```
 
 ### Chain of Thought Reasoning
@@ -171,6 +256,8 @@ See the model's reasoning process when solving complex problems:
 
 ```bash
 deepseek reason --show-reasoning "What is the derivative of f(x) = x^3 + 2x^2 - 5x + 7?"
+# OR
+deepseek solve --show-reasoning "What is the derivative of f(x) = x^3 + 2x^2 - 5x + 7?"
 ```
 
 ### Token Counting and Cost Estimation
@@ -179,6 +266,8 @@ Count tokens and estimate API costs for text or files:
 
 ```bash
 deepseek tokens "Your text here"
+# OR
+deepseek count "Your text here"
 ```
 
 ### Contextual Token Information
@@ -224,28 +313,60 @@ Prices listed are per 1 million tokens. Billing is based on the total number of 
 
 ## Examples
 
-### Chat Example
+### Chat/Ask Example
 
 ```bash
 deepseek chat "Write a Python function to calculate the Fibonacci sequence"
+# OR
+deepseek ask "Write a Python function to calculate the Fibonacci sequence"
 ```
 
-### Reason Example
+### Reason/Solve Example
 
 ```bash
 deepseek reason "What is the time complexity of quicksort in the worst case, and why?"
+# OR
+deepseek solve "What is the time complexity of quicksort in the worst case, and why?"
 ```
 
-### Analyze Example
+### Analyze/Review Example
 
 ```bash
 deepseek analyze app.js
+# OR
+deepseek review app.js
 ```
 
-### Tokens Example
+### Tokens/Count Example
 
 ```bash
 deepseek tokens -f README.md -m deepseek-reasoner
+# OR
+deepseek count -f README.md -m deepseek-reasoner
+```
+
+### Explain Example
+
+```bash
+deepseek explain "How do promises work in JavaScript?"
+```
+
+### Fix Example
+
+```bash
+deepseek fix broken_script.py
+```
+
+### Improve Example
+
+```bash
+deepseek improve legacy_code.js
+```
+
+### Cost Example
+
+```bash
+deepseek cost -f large_document.txt
 ```
 
 ## Troubleshooting

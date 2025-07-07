@@ -1,6 +1,6 @@
 {
   "name": "run-deepseek-cli",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "AI-powered assistant CLI using DeepSeek models for code analysis, chat, and problem solving",
   "main": "dist/index.js",
   "bin": {
@@ -38,7 +38,8 @@
     "reasoning",
     "streaming",
     "token-counter",
-    "cost-estimation"
+    "cost-estimation",
+    "accessibility"
   ],
   "author": "Your Name <your.email@example.com>",
   "license": "MIT",

@@ -22,24 +22,33 @@ ${chalk.yellow('OPTIONS')}
   -V, --version             Show version number
   -h, --help                Show help information
 
-${chalk.yellow('COMMANDS')}
-  chat <prompt>             Send a single prompt
-  reason <prompt>           Solve problems with reasoning
-  analyze <file>            Analyze code quality
-  tokens <input>            Count tokens and estimate costs
-    -f, --file              Treat input as a file path
-    -m, --model <model>     Model for cost estimation
-    -t, --time <period>     Time period (standard/discount)
-    -j, --json              Output in JSON format
-  models                    List available models
+${chalk.yellow('COMMANDS & ALIASES')}
+  chat, ask <prompt>        Send a single prompt
+  reason, solve <prompt>    Solve problems with reasoning
+  analyze, review <file>    Analyze code quality
+  tokens, count <input>     Count tokens and estimate costs
+  models, list              List available models
+  explain <topic>           Get an explanation on a topic
+  fix <file>                Fix issues in a code file
+  improve <file>            Suggest improvements for a code file
+  cost <text>               Estimate the cost of processing text
+  help                      Display help information
+
+${chalk.yellow('TOKEN OPTIONS')}
+  -f, --file                Treat input as a file path
+  -m, --model <model>       Model for cost estimation
+  -t, --time <period>       Time period (standard/discount)
+  -j, --json                Output in JSON format
 
 ${chalk.yellow('EXAMPLES')}
-  $ deepseek chat "Write a function to calculate prime numbers"
-  $ deepseek --stream chat "Explain quantum computing"
-  $ deepseek reason "Solve: x + y = 10, x * y = 24"
-  $ deepseek analyze app.js
-  $ deepseek tokens "How many tokens is this text?"
-  $ deepseek tokens -f README.md
+  $ deepseek ask "Write a function to calculate prime numbers"
+  $ deepseek solve "Find the roots of x^2 - 5x + 6 = 0"
+  $ deepseek review app.js
+  $ deepseek fix broken.js
+  $ deepseek improve code.py
+  $ deepseek explain "async/await in JavaScript"
+  $ deepseek count "How many tokens is this text?"
+  $ deepseek cost -f README.md
 
 ${chalk.yellow('CONFIGURATION')}
   Set API key via:

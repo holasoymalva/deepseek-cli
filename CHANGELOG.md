@@ -2,6 +2,22 @@
 
 All notable changes to the DeepSeek CLI project will be documented in this file.
 
+## [0.3.4] - 2025-07-07
+
+### Added
+- Human-friendly command aliases for improved accessibility
+- New `ask` alias for the `chat` command
+- New `solve` alias for the `reason` command
+- New `review` alias for the `analyze` command
+- New `count` alias for the `tokens` command
+- New `list` alias for the `models` command
+- New task-specific commands: `explain`, `fix`, `improve`, and `cost`
+- Updated help documentation to include all aliases and new commands
+
+### Changed
+- Enhanced help text with better organization and examples
+- Improved command descriptions for clarity
+
 ## [0.3.3] - 2025-07-07
 
 ### Added

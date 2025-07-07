@@ -146,18 +146,31 @@ Create a `.deepseekrc` file in your home directory:
 | `-s, --stream` | Enable streaming responses | `false` |
 | `-r, --show-reasoning` | Show reasoning process | `false` |
 
-## CLI Commands
+## CLI Commands and Aliases
+
+DeepSeek CLI provides both technical commands and human-friendly aliases to accommodate users with different preferences and technical backgrounds.
+
+### Core Commands and Aliases
+
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `deepseek` | - | Start interactive mode |
+| `deepseek chat <prompt>` | `deepseek ask <prompt>` | Send a single prompt |
+| `deepseek reason <prompt>` | `deepseek solve <prompt>` | Solve complex problems with reasoning |
+| `deepseek analyze <file>` | `deepseek review <file>` | Analyze a code file |
+| `deepseek tokens <input>` | `deepseek count <input>` | Count tokens and estimate costs |
+| `deepseek models` | `deepseek list` | List available models |
+
+### Task-Specific Commands
 
 | Command | Description |
 |---------|-------------|
-| `deepseek` | Start interactive mode |
-| `deepseek --help` | Show help information |
+| `deepseek explain <topic>` | Get an explanation on a specific topic |
+| `deepseek fix <file>` | Fix issues in a code file |
+| `deepseek improve <file>` | Suggest improvements for a code file |
+| `deepseek cost <text>` | Estimate the cost of processing text |
+| `deepseek help` | Show help information |
 | `deepseek --version` | Show version |
-| `deepseek chat <prompt>` | Send a single prompt |
-| `deepseek analyze <file>` | Analyze a code file |
-| `deepseek reason <prompt>` | Solve complex problems with reasoning |
-| `deepseek tokens <input>` | Count tokens and estimate costs |
-| `deepseek models` | List available models |
 
 ### Interactive Mode
 

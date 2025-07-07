@@ -21,7 +21,7 @@ export class CLI {
     this.program
       .name('deepseek')
       .description('AI-powered coding assistant (MVP)')
-      .version('0.3.3')
+      .version('0.3.4')
       .option('-k, --api-key <key>', 'DeepSeek API key')
       .option('-m, --model <model>', `Model to use (available: ${Object.values(AVAILABLE_MODELS).join(', ')})`, AVAILABLE_MODELS.CHAT)
       .option('-t, --temperature <temp>', 'Temperature for response creativity (0.0-1.0)', '0.1')
@@ -37,6 +37,7 @@ export class CLI {
     // Chat command for single prompts
     this.program
       .command('chat <prompt>')
+      .alias('ask')
       .description('Send a single prompt')
       .action(async (prompt, options) => {
         const config = this.buildConfig(this.program.opts());
@@ -46,6 +47,7 @@ export class CLI {
     // Analyze command for code files
     this.program
       .command('analyze <file>')
+      .alias('review')
       .description('Analyze a code file for quality, bugs, and improvements')
       .action(async (file, options) => {
         const config = this.buildConfig(this.program.opts());
@@ -55,6 +57,7 @@ export class CLI {
     // Reason command for complex problems
     this.program
       .command('reason <prompt>')
+      .alias('solve')
       .description('Solve complex problems with detailed reasoning (uses deepseek-reasoner model)')
       .action(async (prompt, options) => {
         const config = this.buildConfig({
@@ -68,6 +71,7 @@ export class CLI {
     // Tokens command for counting tokens and estimating costs
     this.program
       .command('tokens <input>')
+      .alias('count')
       .description('Count tokens and estimate costs for text or a file')
       .option('-f, --file', 'Treat input as a file path')
       .option('-m, --model <model>', 'Model to use for cost estimation (deepseek-chat or deepseek-reasoner)')
@@ -81,6 +85,7 @@ export class CLI {
     // Models command to list available models
     this.program
       .command('models')
+      .alias('list')
       .description('List available DeepSeek models')
       .action(() => {
         console.log(chalk.cyan('\nAvailable DeepSeek Models:\n'));
@@ -96,6 +101,84 @@ export class CLI {
       .description('Display help information')
       .action(() => {
         console.log(helpText);
+      });
+
+    // Additional human-friendly aliases
+    this.program
+      .command('explain <topic>')
+      .description('Get an explanation on a topic')
+      .action(async (topic, options) => {
+        const config = this.buildConfig(this.program.opts());
+        await chatCommand(`Please explain ${topic} in a clear and concise way.`, config);
+      });
+
+    this.program
+      .command('fix <file>')
+      .description('Fix issues in a code file')
+      .action(async (file, options) => {
+        const config = this.buildConfig(this.program.opts());
+        const fs = require('fs');
+        const path = require('path');
+        
+        try {
+          const fileContent = fs.readFileSync(file, 'utf8');
+          const fileName = path.basename(file);
+          const fileExt = path.extname(file).substring(1);
+          
+          const prompt = `Please fix the issues in this ${fileExt} code and provide the corrected version:
+
+\`\`\`${fileExt}
+${fileContent}
+\`\`\`
+
+Please explain what you fixed and why.`;
+          
+          await chatCommand(prompt, config);
+        } catch (error) {
+          console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);
+          process.exit(1);
+        }
+      });
+
+    this.program
+      .command('improve <file>')
+      .description('Suggest improvements for a code file')
+      .action(async (file, options) => {
+        const config = this.buildConfig(this.program.opts());
+        const fs = require('fs');
+        const path = require('path');
+        
+        try {
+          const fileContent = fs.readFileSync(file, 'utf8');
+          const fileName = path.basename(file);
+          const fileExt = path.extname(file).substring(1);
+          
+          const prompt = `Please suggest improvements for this ${fileExt} code:
+
+\`\`\`${fileExt}
+${fileContent}
+\`\`\`
+
+Focus on:
+1. Code quality and readability
+2. Performance optimizations
+3. Best practices
+4. Modern language features`;
+          
+          await chatCommand(prompt, config);
+        } catch (error) {
+          console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);
+          process.exit(1);
+        }
+      });
+
+    this.program
+      .command('cost <text>')
+      .description('Estimate the cost of processing text')
+      .option('-f, --file', 'Treat input as a file path')
+      .action(async (text, options) => {
+        const config = this.buildConfig(this.program.opts());
+        await tokensCommand(text, { ...options, json: false }, config);
       });
 
     // Default action (interactive mode)
