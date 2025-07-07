@@ -2,6 +2,19 @@
 
 All notable changes to the DeepSeek CLI project will be documented in this file.
 
+## [0.3.3] - 2025-07-07
+
+### Added
+- Contextual token usage information after each API call
+- Session token tracking in interactive mode
+- Cost estimation for each API call
+- Session summary with total tokens and costs
+- New "stats" command in interactive mode to display session statistics
+
+### Changed
+- Enhanced UI with token usage information
+- Improved interactive mode with more feedback
+
 ## [0.3.2] - 2025-07-07
 
 ### Added

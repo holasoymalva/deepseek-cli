@@ -5,6 +5,8 @@ import { chatCommand } from './commands/chat';
 import { interactiveCommand } from './commands/interactive';
 import { analyzeCommand } from './commands/analyze';
 import { tokensCommand } from './commands/tokens';
+import { DeepSeekAPI, TokenUsage } from './api';
+import ora from 'ora';
 
 export class CLI {
   private program: Command;
@@ -18,7 +20,7 @@ export class CLI {
     this.program
       .name('deepseek')
       .description('AI-powered coding assistant (MVP)')
-      .version('0.3.2')
+      .version('0.3.3')
       .option('-k, --api-key <key>', 'DeepSeek API key')
       .option('-m, --model <model>', `Model to use (available: ${Object.values(AVAILABLE_MODELS).join(', ')})`, AVAILABLE_MODELS.CHAT)
       .option('-t, --temperature <temp>', 'Temperature for response creativity (0.0-1.0)', '0.1')
@@ -97,9 +99,6 @@ export class CLI {
   }
 
   private async reasonCommand(prompt: string, config: Config): Promise<void> {
-    const { DeepSeekAPI } = require('./api');
-    const ora = require('ora');
-    
     const spinner = ora('Thinking...').start();
     
     try {
@@ -115,11 +114,26 @@ export class CLI {
       }
       
       console.log('\n' + this.formatResponse(response.content) + '\n');
+      
+      // Display token usage if available
+      if (response.usage) {
+        this.displayTokenUsage(response.usage);
+      }
     } catch (error) {
       spinner.stop();
       console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);
       process.exit(1);
     }
+  }
+
+  private displayTokenUsage(usage: TokenUsage): void {
+    console.log(chalk.dim('─'.repeat(40)));
+    console.log(chalk.dim('Token Usage:'));
+    console.log(chalk.dim(`  Input: ${usage.promptTokens} tokens`));
+    console.log(chalk.dim(`  Output: ${usage.completionTokens} tokens`));
+    console.log(chalk.dim(`  Total: ${usage.totalTokens} tokens`));
+    console.log(chalk.dim(`  Estimated Cost: $${usage.estimatedCost.toFixed(6)}`));
+    console.log(chalk.dim('─'.repeat(40)));
   }
 
   private getModelDescription(model: string): string {

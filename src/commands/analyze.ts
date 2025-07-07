@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
 import ora from 'ora';
-import { DeepSeekAPI } from '../api';
+import { DeepSeekAPI, TokenUsage } from '../api';
 import { Config } from '../config';
 
 export async function analyzeCommand(filePath: string, config: Config): Promise<void> {
@@ -39,7 +39,12 @@ ${fileContent}
     spinner.stop();
     
     // Display response
-    console.log('\n' + formatResponse(response) + '\n');
+    console.log('\n' + formatResponse(response.content) + '\n');
+    
+    // Display token usage if available
+    if (response.usage) {
+      displayTokenUsage(response.usage);
+    }
   } catch (error) {
     console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);
     process.exit(1);
@@ -60,4 +65,14 @@ function formatResponse(response: string): string {
   formatted = formatted.replace(/\*\*(.*?)\*\*/g, chalk.bold('$1'));
   
   return formatted;
+}
+
+function displayTokenUsage(usage: TokenUsage): void {
+  console.log(chalk.dim('─'.repeat(40)));
+  console.log(chalk.dim('Token Usage:'));
+  console.log(chalk.dim(`  Input: ${usage.promptTokens} tokens`));
+  console.log(chalk.dim(`  Output: ${usage.completionTokens} tokens`));
+  console.log(chalk.dim(`  Total: ${usage.totalTokens} tokens`));
+  console.log(chalk.dim(`  Estimated Cost: $${usage.estimatedCost.toFixed(6)}`));
+  console.log(chalk.dim('─'.repeat(40)));
 }

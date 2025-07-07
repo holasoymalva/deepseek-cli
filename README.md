@@ -210,6 +210,20 @@ deepseek tokens -f path/to/file.txt -m deepseek-reasoner -t discount
 deepseek tokens "Your text here" -j
 ```
 
+### Contextual Token Information
+
+The CLI now provides contextual token usage information after each API call:
+
+- **Token Usage Display**: See token counts and cost estimates after each command
+- **Interactive Mode Stats**: Type `stats` in interactive mode to see session totals
+- **Session Summary**: View total token usage and costs when exiting interactive mode
+
+This helps you:
+- Monitor your API usage in real-time
+- Track costs across multiple requests
+- Optimize your prompts for token efficiency
+- Plan your API budget more effectively
+
 ## Documentation Structure
 
 The documentation for the DeepSeek CLI is organized into two main folders:

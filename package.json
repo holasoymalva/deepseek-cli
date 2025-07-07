@@ -1,6 +1,6 @@
 {
   "name": "run-deepseek-cli",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "AI-powered assistant CLI using DeepSeek models for code analysis, chat, and problem solving",
   "main": "dist/index.js",
   "bin": {
