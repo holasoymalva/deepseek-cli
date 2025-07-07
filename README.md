@@ -11,9 +11,10 @@ With the DeepSeek CLI you can:
 
 - **Code Completion & Generation**: Get intelligent code suggestions and generate complete functions across multiple programming languages.
 - **Code Analysis & Review**: Analyze code for quality, bugs, and improvements.
-- **Problem Solving**: Solve complex problems with the reasoning capabilities of DeepSeek models.
+- **Problem Solving with Reasoning**: Solve complex problems with the reasoning capabilities of DeepSeek models.
 - **Interactive Chat**: Have multi-turn conversations about coding and other topics.
 - **Multiple Models**: Choose between different DeepSeek models for different tasks.
+- **Streaming Responses**: Get real-time responses as they're generated.
 
 ## Quickstart
 
@@ -80,6 +81,9 @@ deepseek chat "Write a Python function to implement binary search with proper er
 # Interactive mode
 deepseek
 > Write a Python function to implement binary search with proper error handling
+
+# Streaming responses
+deepseek --stream chat "Write a Python function to implement binary search with proper error handling"
 ```
 
 ### Analyze Code
@@ -92,11 +96,14 @@ deepseek analyze path/to/your/file.js
 deepseek --model deepseek-reasoner analyze path/to/your/file.js
 ```
 
-### Solve Problems
+### Solve Problems with Reasoning
 
 ```sh
-# Use the reasoning model for complex problems
-deepseek --model deepseek-reasoner chat "Solve this math problem: If x + y = 10 and x * y = 24, what are the values of x and y?"
+# Use the reason command for complex problems
+deepseek reason "Solve this math problem: If x + y = 10 and x * y = 24, what are the values of x and y?"
+
+# Show the reasoning process
+deepseek reason --show-reasoning "Solve this math problem: If x + y = 10 and x * y = 24, what are the values of x and y?"
 ```
 
 ## Configuration
@@ -110,6 +117,8 @@ deepseek --model deepseek-reasoner chat "Solve this math problem: If x + y = 10 
 | `DEEPSEEK_API_URL` | API endpoint | `https://api.deepseek.com/chat/completions` |
 | `DEEPSEEK_MAX_TOKENS` | Maximum tokens per response | `4096` |
 | `DEEPSEEK_TEMPERATURE` | Response creativity (0.0-1.0) | `0.1` |
+| `DEEPSEEK_STREAM` | Enable streaming responses | `false` |
+| `DEEPSEEK_SHOW_REASONING` | Show reasoning process | `false` |
 
 ### Configuration File
 
@@ -120,7 +129,9 @@ Create a `.deepseekrc` file in your home directory:
   "apiKey": "your_api_key_here",
   "model": "deepseek-chat",
   "temperature": 0.2,
-  "maxTokens": 4096
+  "maxTokens": 4096,
+  "stream": true,
+  "showReasoning": false
 }
 ```
 
@@ -132,6 +143,8 @@ Create a `.deepseekrc` file in your home directory:
 | `-m, --model <model>` | Model to use | `deepseek-chat` |
 | `-t, --temperature <temp>` | Temperature (0.0-1.0) | `0.1` |
 | `--max-tokens <tokens>` | Maximum tokens in response | `4096` |
+| `-s, --stream` | Enable streaming responses | `false` |
+| `-r, --show-reasoning` | Show reasoning process | `false` |
 
 ## CLI Commands
 
@@ -142,6 +155,7 @@ Create a `.deepseekrc` file in your home directory:
 | `deepseek --version` | Show version |
 | `deepseek chat <prompt>` | Send a single prompt |
 | `deepseek analyze <file>` | Analyze a code file |
+| `deepseek reason <prompt>` | Solve complex problems with reasoning |
 | `deepseek models` | List available models |
 
 ### Interactive Mode
@@ -158,6 +172,24 @@ The interactive mode provides a REPL experience:
 |-------|-------------|----------|
 | `deepseek-chat` | General purpose chat model | Code generation, explanations, general assistance |
 | `deepseek-reasoner` | Advanced reasoning capabilities | Complex problems, mathematical reasoning, logical analysis |
+
+## Advanced Features
+
+### Streaming Responses
+
+Get real-time responses as they're generated:
+
+```bash
+deepseek --stream chat "Explain how quantum computing works"
+```
+
+### Chain of Thought Reasoning
+
+See the model's reasoning process when solving complex problems:
+
+```bash
+deepseek reason --show-reasoning "What is the derivative of f(x) = x^3 + 2x^2 - 5x + 7?"
+```
 
 ## Installation Options
 

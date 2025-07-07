@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { getConfig, AVAILABLE_MODELS } from './config';
+import { getConfig, AVAILABLE_MODELS, Config } from './config';
 import { chatCommand } from './commands/chat';
 import { interactiveCommand } from './commands/interactive';
 import { analyzeCommand } from './commands/analyze';
@@ -17,11 +17,13 @@ export class CLI {
     this.program
       .name('deepseek')
       .description('AI-powered coding assistant (MVP)')
-      .version('0.1.0')
+      .version('0.3.0')
       .option('-k, --api-key <key>', 'DeepSeek API key')
       .option('-m, --model <model>', `Model to use (available: ${Object.values(AVAILABLE_MODELS).join(', ')})`, AVAILABLE_MODELS.CHAT)
       .option('-t, --temperature <temp>', 'Temperature for response creativity (0.0-1.0)', '0.1')
-      .option('--max-tokens <tokens>', 'Maximum tokens in response', '4096');
+      .option('--max-tokens <tokens>', 'Maximum tokens in response', '4096')
+      .option('-s, --stream', 'Enable streaming responses', false)
+      .option('-r, --show-reasoning', 'Show reasoning (only for deepseek-reasoner model)', false);
 
     // Chat command for single prompts
     this.program
@@ -39,6 +41,19 @@ export class CLI {
       .action(async (file, options) => {
         const config = this.buildConfig(this.program.opts());
         await analyzeCommand(file, config);
+      });
+
+    // Reason command for complex problems
+    this.program
+      .command('reason <prompt>')
+      .description('Solve complex problems with detailed reasoning (uses deepseek-reasoner model)')
+      .action(async (prompt, options) => {
+        const config = this.buildConfig({
+          ...this.program.opts(),
+          model: AVAILABLE_MODELS.REASONER,
+          showReasoning: true
+        });
+        await this.reasonCommand(prompt, config);
       });
 
     // Models command to list available models
@@ -67,6 +82,32 @@ export class CLI {
       });
   }
 
+  private async reasonCommand(prompt: string, config: Config): Promise<void> {
+    const { DeepSeekAPI } = require('./api');
+    const ora = require('ora');
+    
+    const spinner = ora('Thinking...').start();
+    
+    try {
+      const api = new DeepSeekAPI(config);
+      const response = await api.completeWithReasoning(prompt);
+      
+      spinner.stop();
+      
+      if (config.showReasoning && response.reasoningContent) {
+        console.log(chalk.cyan('\n--- Reasoning Process ---'));
+        console.log(response.reasoningContent);
+        console.log(chalk.cyan('\n--- Final Answer ---'));
+      }
+      
+      console.log('\n' + this.formatResponse(response.content) + '\n');
+    } catch (error) {
+      spinner.stop();
+      console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);
+      process.exit(1);
+    }
+  }
+
   private getModelDescription(model: string): string {
     switch (model) {
       case AVAILABLE_MODELS.CHAT:
@@ -78,6 +119,22 @@ export class CLI {
     }
   }
 
+  private formatResponse(response: string): string {
+    // Format code blocks
+    let formatted = response.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+      const header = lang ? chalk.gray(`\`\`\`${lang}`) : chalk.gray('```');
+      return header + '\n' + chalk.white(code.trim()) + '\n' + chalk.gray('```');
+    });
+    
+    // Format headers
+    formatted = formatted.replace(/^#{1,3} (.+)$/gm, chalk.bold.cyan('$1'));
+    
+    // Format bold
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, chalk.bold('$1'));
+    
+    return formatted;
+  }
+
   private buildConfig(options: any): any {
     const config = getConfig();
     
@@ -86,6 +143,8 @@ export class CLI {
     if (options.model) config.model = options.model;
     if (options.temperature) config.temperature = parseFloat(options.temperature);
     if (options.maxTokens) config.maxTokens = parseInt(options.maxTokens, 10);
+    if (options.stream !== undefined) config.stream = options.stream;
+    if (options.showReasoning !== undefined) config.showReasoning = options.showReasoning;
     
     // Validate
     if (!config.apiKey) {

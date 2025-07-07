@@ -8,6 +8,8 @@ export interface Config {
   apiUrl: string;
   maxTokens: number;
   temperature: number;
+  stream: boolean;
+  showReasoning: boolean;
 }
 
 // Available DeepSeek models
@@ -81,11 +83,19 @@ export function getConfig(): Config {
   const modelFromEnv = process.env.DEEPSEEK_MODEL || rcConfig.model || AVAILABLE_MODELS.CHAT;
   const validatedModel = validateModel(modelFromEnv);
 
+  // Stream option
+  const stream = process.env.DEEPSEEK_STREAM === 'true' || rcConfig.stream || false;
+
+  // Show reasoning option (for deepseek-reasoner)
+  const showReasoning = process.env.DEEPSEEK_SHOW_REASONING === 'true' || rcConfig.showReasoning || false;
+
   return {
     apiKey: getApiKey(),
     model: validatedModel,
     apiUrl: process.env.DEEPSEEK_API_URL || rcConfig.apiUrl || 'https://api.deepseek.com/chat/completions',
     maxTokens: maxTokens,
-    temperature: temperature
+    temperature: temperature,
+    stream: stream,
+    showReasoning: showReasoning
   };
 }

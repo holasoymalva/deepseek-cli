@@ -4,6 +4,14 @@ import { DeepSeekAPI } from '../api';
 import { Config } from '../config';
 
 export async function chatCommand(prompt: string, config: Config): Promise<void> {
+  if (config.stream) {
+    await streamingChat(prompt, config);
+  } else {
+    await nonStreamingChat(prompt, config);
+  }
+}
+
+async function nonStreamingChat(prompt: string, config: Config): Promise<void> {
   const spinner = ora('Thinking...').start();
   
   try {
@@ -12,6 +20,32 @@ export async function chatCommand(prompt: string, config: Config): Promise<void>
     
     spinner.stop();
     console.log('\n' + formatResponse(response) + '\n');
+  } catch (error) {
+    spinner.stop();
+    console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
+}
+
+async function streamingChat(prompt: string, config: Config): Promise<void> {
+  const spinner = ora('Thinking...').start();
+  let responseStarted = false;
+  
+  try {
+    const api = new DeepSeekAPI(config);
+    await api.completeStream(prompt, (chunk) => {
+      if (!responseStarted) {
+        spinner.stop();
+        console.log(''); // Add a newline before the response
+        responseStarted = true;
+      }
+      process.stdout.write(chunk);
+    });
+    
+    if (!responseStarted) {
+      spinner.stop();
+    }
+    console.log('\n'); // Add a newline after the response
   } catch (error) {
     spinner.stop();
     console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);

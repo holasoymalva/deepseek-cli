@@ -2,6 +2,20 @@
 
 All notable changes to the DeepSeek CLI project will be documented in this file.
 
+## [0.3.0] - 2025-07-07
+
+### Added
+- Streaming responses for real-time output
+- New `reason` command for complex problem solving with the deepseek-reasoner model
+- Chain of Thought (CoT) reasoning display with the `--show-reasoning` flag
+- Support for streaming API responses
+- Enhanced error handling for streaming responses
+
+### Changed
+- Updated CLI interface with new options for streaming and reasoning
+- Improved response formatting for better readability
+- Updated documentation to reflect new features
+
 ## [0.2.0] - 2025-07-07
 
 ### Added
