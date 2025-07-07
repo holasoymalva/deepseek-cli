@@ -2,6 +2,14 @@
 
 All notable changes to the DeepSeek CLI project will be documented in this file.
 
+## [0.3.1] - 2025-07-07
+
+### Added
+- Detailed model comparison and pricing information
+- Comprehensive documentation on model capabilities and limitations
+- Pricing details for both standard and discount time periods
+- Explanatory notes on context length, max output, and token counting
+
 ## [0.3.0] - 2025-07-07
 
 ### Added

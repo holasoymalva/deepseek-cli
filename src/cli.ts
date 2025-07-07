@@ -17,7 +17,7 @@ export class CLI {
     this.program
       .name('deepseek')
       .description('AI-powered coding assistant (MVP)')
-      .version('0.3.0')
+      .version('0.3.1')
       .option('-k, --api-key <key>', 'DeepSeek API key')
       .option('-m, --model <model>', `Model to use (available: ${Object.values(AVAILABLE_MODELS).join(', ')})`, AVAILABLE_MODELS.CHAT)
       .option('-t, --temperature <temp>', 'Temperature for response creativity (0.0-1.0)', '0.1')
