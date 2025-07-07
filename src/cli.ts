@@ -6,6 +6,7 @@ import { interactiveCommand } from './commands/interactive';
 import { analyzeCommand } from './commands/analyze';
 import { tokensCommand } from './commands/tokens';
 import { DeepSeekAPI, TokenUsage } from './api';
+import { helpText } from './help';
 import ora from 'ora';
 
 export class CLI {
@@ -26,7 +27,12 @@ export class CLI {
       .option('-t, --temperature <temp>', 'Temperature for response creativity (0.0-1.0)', '0.1')
       .option('--max-tokens <tokens>', 'Maximum tokens in response', '4096')
       .option('-s, --stream', 'Enable streaming responses', false)
-      .option('-r, --show-reasoning', 'Show reasoning (only for deepseek-reasoner model)', false);
+      .option('-r, --show-reasoning', 'Show reasoning (only for deepseek-reasoner model)', false)
+      .helpOption('-h, --help', 'Display help information')
+      .addHelpCommand(false)
+      .on('--help', () => {
+        console.log(helpText);
+      });
 
     // Chat command for single prompts
     this.program
@@ -84,9 +90,23 @@ export class CLI {
         console.log('');
       });
 
+    // Help command
+    this.program
+      .command('help')
+      .description('Display help information')
+      .action(() => {
+        console.log(helpText);
+      });
+
     // Default action (interactive mode)
     this.program
       .action(async () => {
+        // If no command is specified but help is requested, show help
+        if (this.program.opts().help) {
+          console.log(helpText);
+          return;
+        }
+        
         const config = this.buildConfig(this.program.opts());
         
         // Show welcome
