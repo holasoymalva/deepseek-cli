@@ -1,6 +1,6 @@
 {
   "name": "run-deepseek-cli",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "AI-powered assistant CLI using DeepSeek models for code analysis, chat, and problem solving",
   "main": "dist/index.js",
   "bin": {
@@ -11,7 +11,8 @@
     "README.md",
     "LICENSE",
     "CHANGELOG.md",
-    "package.json"
+    "package.json",
+    "deepseek_v3_tokenizer/**/*"
   ],
   "scripts": {
     "build": "tsc",
@@ -34,7 +35,9 @@
     "command-line",
     "ai-assistant",
     "reasoning",
-    "streaming"
+    "streaming",
+    "token-counter",
+    "cost-estimation"
   ],
   "author": "Your Name <your.email@example.com>",
   "license": "MIT",

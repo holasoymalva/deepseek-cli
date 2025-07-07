@@ -156,6 +156,7 @@ Create a `.deepseekrc` file in your home directory:
 | `deepseek chat <prompt>` | Send a single prompt |
 | `deepseek analyze <file>` | Analyze a code file |
 | `deepseek reason <prompt>` | Solve complex problems with reasoning |
+| `deepseek tokens <input>` | Count tokens and estimate costs |
 | `deepseek models` | List available models |
 
 ### Interactive Mode
@@ -189,6 +190,24 @@ See the model's reasoning process when solving complex problems:
 
 ```bash
 deepseek reason --show-reasoning "What is the derivative of f(x) = x^3 + 2x^2 - 5x + 7?"
+```
+
+### Token Counting and Cost Estimation
+
+Count tokens and estimate API costs for text or files:
+
+```bash
+# Count tokens in text
+deepseek tokens "Your text here"
+
+# Count tokens in a file
+deepseek tokens -f path/to/file.txt
+
+# Specify model and time period for accurate cost estimation
+deepseek tokens -f path/to/file.txt -m deepseek-reasoner -t discount
+
+# Get JSON output for programmatic use
+deepseek tokens "Your text here" -j
 ```
 
 ## Documentation Structure

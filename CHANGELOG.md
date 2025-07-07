@@ -2,6 +2,15 @@
 
 All notable changes to the DeepSeek CLI project will be documented in this file.
 
+## [0.3.2] - 2025-07-07
+
+### Added
+- New `tokens` command for counting tokens and estimating API costs
+- Support for token counting in both text and files
+- Cost estimation for different models and time periods
+- JSON output option for programmatic use
+- DeepSeek V3 tokenizer integration
+
 ## [0.3.1] - 2025-07-07
 
 ### Added

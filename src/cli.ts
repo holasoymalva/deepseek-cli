@@ -4,6 +4,7 @@ import { getConfig, AVAILABLE_MODELS, Config } from './config';
 import { chatCommand } from './commands/chat';
 import { interactiveCommand } from './commands/interactive';
 import { analyzeCommand } from './commands/analyze';
+import { tokensCommand } from './commands/tokens';
 
 export class CLI {
   private program: Command;
@@ -17,7 +18,7 @@ export class CLI {
     this.program
       .name('deepseek')
       .description('AI-powered coding assistant (MVP)')
-      .version('0.3.1')
+      .version('0.3.2')
       .option('-k, --api-key <key>', 'DeepSeek API key')
       .option('-m, --model <model>', `Model to use (available: ${Object.values(AVAILABLE_MODELS).join(', ')})`, AVAILABLE_MODELS.CHAT)
       .option('-t, --temperature <temp>', 'Temperature for response creativity (0.0-1.0)', '0.1')
@@ -54,6 +55,19 @@ export class CLI {
           showReasoning: true
         });
         await this.reasonCommand(prompt, config);
+      });
+
+    // Tokens command for counting tokens and estimating costs
+    this.program
+      .command('tokens <input>')
+      .description('Count tokens and estimate costs for text or a file')
+      .option('-f, --file', 'Treat input as a file path')
+      .option('-m, --model <model>', 'Model to use for cost estimation (deepseek-chat or deepseek-reasoner)')
+      .option('-t, --time <period>', 'Time period for pricing (standard or discount)')
+      .option('-j, --json', 'Output in JSON format')
+      .action(async (input, options) => {
+        const config = this.buildConfig(this.program.opts());
+        await tokensCommand(input, options, config);
       });
 
     // Models command to list available models
