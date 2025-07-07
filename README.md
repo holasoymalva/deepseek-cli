@@ -5,17 +5,16 @@
 
 ![image](https://github.com/user-attachments/assets/5686866b-a841-4303-b7c4-c2c437816644)
 
-
-This repository contains the DeepSeek CLI, a command-line AI coding assistant that leverages the powerful DeepSeek Coder models to accelerate your development workflows and enhance your coding experience.
+This repository contains the DeepSeek CLI, a command-line AI assistant that leverages the powerful DeepSeek models to accelerate your development workflows and enhance your coding experience.
 
 With the DeepSeek CLI you can:
 
-- **Code Completion & Generation**: Get intelligent code suggestions and generate complete functions across 100+ programming languages.
-- **Repository-Level Understanding**: Analyze and work with large codebases using DeepSeek's advanced code comprehension capabilities.
-- **Code Refactoring & Migration**: Modernize legacy code, migrate between frameworks, and implement best practices.
-- **Debugging & Code Review**: Get help identifying bugs, security issues, and code quality improvements.
-- **Project Scaffolding**: Generate new applications, components, and boilerplate code from descriptions or requirements.
-- **Multi-Language Support**: Work seamlessly across Python, JavaScript, Java, C++, Go, Rust, and 90+ other languages.
+- **Code Completion & Generation**: Get intelligent code suggestions and generate complete functions across multiple programming languages.
+- **Code Analysis & Review**: Analyze code for quality, bugs, and improvements.
+- **Problem Solving with Reasoning**: Solve complex problems with the reasoning capabilities of DeepSeek models.
+- **Interactive Chat**: Have multi-turn conversations about coding and other topics.
+- **Multiple Models**: Choose between different DeepSeek models for different tasks.
+- **Streaming Responses**: Get real-time responses as they're generated.
 
 ## Quickstart
 
@@ -31,129 +30,80 @@ With the DeepSeek CLI you can:
    Or run directly without installation:
 
    ```bash
-   npx deepseek-cli
+   npx run-deepseek-cli
    ```
 
-3. **Configure API Access:** Set up your DeepSeek API key:
+3. **Configure API Access:** Set up your DeepSeek API key using one of these methods:
 
+   **Option 1: Environment variable**
    ```bash
    export DEEPSEEK_API_KEY="your_api_key_here"
    ```
 
+   **Option 2: Configuration file**
+   Create a `.deepseekrc` file in your home directory:
+   ```json
+   {
+     "apiKey": "your_api_key_here",
+     "model": "deepseek-chat",
+     "temperature": 0.2
+   }
+   ```
+
+   **Option 3: Command line option**
+   ```bash
+   deepseek --api-key="your_api_key_here" chat "Hello"
+   ```
+
    Get your API key from [DeepSeek Platform](https://platform.deepseek.com/api_keys).
 
-4. **Choose Your Model:** The CLI supports multiple DeepSeek Coder models:
-   - `deepseek-coder-33b-instruct` (Recommended for complex tasks)
-   - `deepseek-coder-6.7b-instruct` (Faster responses)
-   - `deepseek-coder-1.3b-instruct` (Lightweight option)
+4. **Choose Your Model:** The CLI supports multiple DeepSeek models:
+   - `deepseek-chat` (General purpose chat model)
+   - `deepseek-reasoner` (Advanced reasoning capabilities)
+
+   View available models with:
+   ```bash
+   deepseek models
+   ```
 
 You are now ready to use the DeepSeek CLI!
 
 ## Examples
 
-Once the CLI is running, you can start interacting with DeepSeek Coder from your shell.
+Once the CLI is running, you can start interacting with DeepSeek from your shell.
 
-### Start a New Project
-
-```sh
-cd new-project/
-deepseek
-> Create a FastAPI web application with user authentication and a PostgreSQL database
-```
-
-### Work with Existing Code
+### Chat with DeepSeek
 
 ```sh
-git clone https://github.com/your-repo/existing-project
-cd existing-project
-deepseek
-> Analyze this codebase and suggest performance optimizations
-```
+# Single prompt
+deepseek chat "Write a Python function to implement binary search with proper error handling"
 
-### Code Completion and Generation
-
-```sh
+# Interactive mode
 deepseek
 > Write a Python function to implement binary search with proper error handling
+
+# Streaming responses
+deepseek --stream chat "Write a Python function to implement binary search with proper error handling"
 ```
+
+### Analyze Code
 
 ```sh
-deepseek
-> Convert this JavaScript function to TypeScript with proper type annotations
+# Analyze a code file
+deepseek analyze path/to/your/file.js
+
+# Analyze with the reasoning model
+deepseek --model deepseek-reasoner analyze path/to/your/file.js
 ```
 
-## Popular Tasks
+### Solve Problems with Reasoning
 
-### Explore and Understand Code
+```sh
+# Use the reason command for complex problems
+deepseek reason "Solve this math problem: If x + y = 10 and x * y = 24, what are the values of x and y?"
 
-Start by `cd`ing into an existing or newly-cloned repository and running `deepseek`.
-
-```text
-> Explain the architecture of this application and identify the main components.
-```
-
-```text
-> What design patterns are used in this codebase?
-```
-
-```text
-> Find potential security vulnerabilities in this code.
-```
-
-### Code Generation and Refactoring
-
-```text
-> Implement a REST API for user management with CRUD operations.
-```
-
-```text
-> Refactor this class to follow SOLID principles.
-```
-
-```text
-> Add comprehensive error handling to this module.
-```
-
-### Migration and Modernization
-
-```text
-> Help me migrate this React class component to hooks.
-```
-
-```text
-> Convert this Python 2.7 code to Python 3.10 with type hints.
-```
-
-```text
-> Upgrade this Express.js app to use async/await instead of callbacks.
-```
-
-### Code Review and Quality
-
-```text
-> Review this pull request and suggest improvements.
-```
-
-```text
-> Add unit tests for all functions in this file.
-```
-
-```text
-> Optimize this algorithm for better time complexity.
-```
-
-### Project Setup
-
-```text
-> Create a React TypeScript project with Redux Toolkit and Material-UI.
-```
-
-```text
-> Set up a Django project with Docker, PostgreSQL, and Redis.
-```
-
-```text
-> Generate a microservices architecture using Node.js and Docker Compose.
+# Show the reasoning process
+deepseek reason --show-reasoning "Solve this math problem: If x + y = 10 and x * y = 24, what are the values of x and y?"
 ```
 
 ## Configuration
@@ -163,98 +113,158 @@ Start by `cd`ing into an existing or newly-cloned repository and running `deepse
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `DEEPSEEK_API_KEY` | Your DeepSeek API key | Required |
-| `DEEPSEEK_MODEL` | Model to use | `deepseek-coder-33b-instruct` |
-| `DEEPSEEK_BASE_URL` | API base URL | `https://api.deepseek.com` |
+| `DEEPSEEK_MODEL` | Model to use | `deepseek-chat` |
+| `DEEPSEEK_API_URL` | API endpoint | `https://api.deepseek.com/chat/completions` |
 | `DEEPSEEK_MAX_TOKENS` | Maximum tokens per response | `4096` |
 | `DEEPSEEK_TEMPERATURE` | Response creativity (0.0-1.0) | `0.1` |
+| `DEEPSEEK_STREAM` | Enable streaming responses | `false` |
+| `DEEPSEEK_SHOW_REASONING` | Show reasoning process | `false` |
 
 ### Configuration File
 
-Create a `.deepseek-cli.json` file in your project root or home directory:
+Create a `.deepseekrc` file in your home directory:
 
 ```json
 {
-  "model": "deepseek-coder-6.7b-instruct",
-  "temperature": 0.1,
-  "maxTokens": 2048,
-  "includeSystemPrompt": true,
-  "autoSave": true,
-  "outputFormat": "markdown"
+  "apiKey": "your_api_key_here",
+  "model": "deepseek-chat",
+  "temperature": 0.2,
+  "maxTokens": 4096,
+  "stream": true,
+  "showReasoning": false
 }
 ```
 
-## Supported Programming Languages
+### Command Line Options
 
-DeepSeek CLI supports intelligent code generation and completion for 100+ programming languages including:
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-k, --api-key <key>` | DeepSeek API key | From config |
+| `-m, --model <model>` | Model to use | `deepseek-chat` |
+| `-t, --temperature <temp>` | Temperature (0.0-1.0) | `0.1` |
+| `--max-tokens <tokens>` | Maximum tokens in response | `4096` |
+| `-s, --stream` | Enable streaming responses | `false` |
+| `-r, --show-reasoning` | Show reasoning process | `false` |
 
-**Popular Languages:**
-`Python`, `JavaScript`, `TypeScript`, `Java`, `C++`, `C#`, `Go`, `Rust`, `PHP`, `Ruby`, `Kotlin`, `Swift`, `Scala`, `R`, `Julia`, `Dart`, `HTML`, `CSS`, `SQL`
+## CLI Commands and Aliases
 
-**Systems & Scripting:**
-`Shell`, `PowerShell`, `Bash`, `Dockerfile`, `Makefile`, `YAML`, `JSON`, `XML`
+DeepSeek CLI provides both technical commands and human-friendly aliases to accommodate users with different preferences and technical backgrounds.
 
-**Specialized:**
-`CUDA`, `Assembly`, `Verilog`, `VHDL`, `Solidity`, `Protocol Buffer`, `Thrift`
+### Core Commands and Aliases
 
-For the complete list, see [Supported Languages](./docs/supported-languages.md).
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `deepseek` | - | Start interactive mode |
+| `deepseek chat <prompt>` | `deepseek ask <prompt>` | Send a single prompt |
+| `deepseek reason <prompt>` | `deepseek solve <prompt>` | Solve complex problems with reasoning |
+| `deepseek analyze <file>` | `deepseek review <file>` | Analyze a code file |
+| `deepseek tokens <input>` | `deepseek count <input>` | Count tokens and estimate costs |
+| `deepseek models` | `deepseek list` | List available models |
 
-## CLI Commands
+### Task-Specific Commands
 
 | Command | Description |
 |---------|-------------|
-| `deepseek` | Start interactive mode |
-| `deepseek --help` | Show help information |
+| `deepseek explain <topic>` | Get an explanation on a specific topic |
+| `deepseek fix <file>` | Fix issues in a code file |
+| `deepseek improve <file>` | Suggest improvements for a code file |
+| `deepseek cost <text>` | Estimate the cost of processing text |
+| `deepseek help` | Show help information |
 | `deepseek --version` | Show version |
-| `deepseek chat "prompt"` | Single prompt mode |
-| `deepseek complete <file>` | Code completion for file |
-| `deepseek review <file>` | Code review |
-| `deepseek explain <file>` | Explain code |
-| `deepseek test <file>` | Generate tests |
-| `deepseek docs <file>` | Generate documentation |
 
 ### Interactive Mode
 
-The interactive mode provides a rich REPL experience:
+The interactive mode provides a REPL experience:
 
 - **Syntax Highlighting**: Color-coded responses for better readability
 - **Code Block Detection**: Automatic language detection and formatting
-- **Session History**: Navigate through previous commands
-- **File Context**: Automatic inclusion of relevant project files
 - **Multi-turn Conversations**: Maintain context across interactions
+
+## Available Models
+
+| Model | Description | Best For |
+|-------|-------------|----------|
+| `deepseek-chat` | General purpose chat model | Code generation, explanations, general assistance |
+| `deepseek-reasoner` | Advanced reasoning capabilities | Complex problems, mathematical reasoning, logical analysis |
 
 ## Advanced Features
 
-### Repository Context
+### Streaming Responses
 
-DeepSeek CLI automatically analyzes your repository structure and includes relevant context:
+Get real-time responses as they're generated:
 
 ```bash
-# Analyze entire repository
-deepseek --include-all
-> Suggest improvements for the overall code architecture
-
-# Include specific files/directories
-deepseek --include src/ tests/ README.md
-> Update the documentation to reflect recent API changes
+deepseek --stream chat "Explain how quantum computing works"
 ```
 
-### Code Templates
+### Chain of Thought Reasoning
 
-Generate common patterns and boilerplate:
+See the model's reasoning process when solving complex problems:
 
-```text
-> Generate a React component template with props validation
-> Create a Python class with proper docstrings and type hints
-> Set up a GitHub Actions workflow for CI/CD
+```bash
+deepseek reason --show-reasoning "What is the derivative of f(x) = x^3 + 2x^2 - 5x + 7?"
 ```
 
-### Integration Workflows
+### Token Counting and Cost Estimation
 
-```text
-> Analyze the git diff and write a commit message
-> Generate API documentation from this OpenAPI spec
-> Create database migration scripts from these model changes
+Count tokens and estimate API costs for text or files:
+
+```bash
+# Count tokens in text
+deepseek tokens "Your text here"
+
+# Count tokens in a file
+deepseek tokens -f path/to/file.txt
+
+# Specify model and time period for accurate cost estimation
+deepseek tokens -f path/to/file.txt -m deepseek-reasoner -t discount
+
+# Get JSON output for programmatic use
+deepseek tokens "Your text here" -j
 ```
+
+### Contextual Token Information
+
+The CLI now provides contextual token usage information after each API call:
+
+- **Token Usage Display**: See token counts and cost estimates after each command
+- **Interactive Mode Stats**: Type `stats` in interactive mode to see session totals
+- **Session Summary**: View total token usage and costs when exiting interactive mode
+
+This helps you:
+- Monitor your API usage in real-time
+- Track costs across multiple requests
+- Optimize your prompts for token efficiency
+- Plan your API budget more effectively
+
+## Documentation Structure
+
+The documentation for the DeepSeek CLI is organized into two main folders:
+
+### API Reference Documentation (api-docs)
+
+The `api-docs` folder contains detailed API reference documentation for the DeepSeek API. This includes:
+
+- API endpoints and their parameters
+- Request and response formats
+- Authentication information
+- Error handling
+
+This documentation is essential for developers who need to understand the technical details of the API.
+
+### Feature Guides and Tutorials (deepseek-docs)
+
+The `deepseek-docs` folder contains guides and tutorials on how to use specific features of the DeepSeek API. This includes:
+
+- Function calling examples
+- JSON mode usage
+- Reasoning model examples
+- Multi-round chat examples
+- And more
+
+These guides are useful for understanding concepts and seeing examples of how to use the API features.
+
+Both sets of documentation are valuable and complement each other. When implementing a feature, it's recommended to consult both the API reference and the relevant guides.
 
 ## Installation Options
 
@@ -267,62 +277,23 @@ npm install -g run-deepseek-cli
 ### Development Installation
 
 ```bash
-git clone https://github.com/your-username/deepseek-cli.git
+git clone https://github.com/holasoymalva/deepseek-cli.git
 cd deepseek-cli
 npm install
 npm run build
 npm link
 ```
 
-### Docker
-
-```bash
-docker run -it -v $(pwd):/workspace -e DEEPSEEK_API_KEY=your_key deepseek/cli
-```
-
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
-
-### Development Setup
+We welcome contributions! Here's how to get started:
 
 1. Fork and clone the repository
 2. Install dependencies: `npm install`
-3. Run tests: `npm test`
-4. Start development server: `npm run dev`
-
-### Building from Source
-
-```bash
-npm run build
-npm run package
-```
-
-## Documentation
-
-- [Full Documentation](./docs/index.md)
-- [API Reference](./docs/api.md)
-- [Configuration Guide](./docs/configuration.md)
-- [Troubleshooting](./docs/troubleshooting.md)
-- [Examples & Tutorials](./docs/examples.md)
-
-## Performance & Limits
-
-| Model | Speed | Context Window | Best For |
-|-------|-------|----------------|----------|
-| deepseek-coder-1.3b-instruct | Fastest | 16K tokens | Quick completions |
-| deepseek-coder-6.7b-instruct | Fast | 16K tokens | General coding tasks |
-| deepseek-coder-33b-instruct | Slower | 16K tokens | Complex analysis |
-
-## DeepSeek Models
-
-This project leverages the DeepSeek Coder models:
-
-- **DeepSeek Coder Base**: Pre-trained on 2T tokens (87% code, 13% natural language)
-- **DeepSeek Coder Instruct**: Fine-tuned for instruction following and chat
-- **Multi-size Options**: 1.3B, 6.7B, and 33B parameter models available
-
-For more details about the models, visit the [DeepSeek Coder GitHub repository](https://github.com/deepseek-ai/deepseek-coder).
+3. Make your changes
+4. Build the project: `npm run build`
+5. Test your changes
+6. Submit a pull request
 
 ## Troubleshooting
 
@@ -330,51 +301,31 @@ For more details about the models, visit the [DeepSeek Coder GitHub repository](
 
 **API Key Issues:**
 ```bash
-export DEEPSEEK_API_KEY="your_actual_api_key"
-# Verify with: echo $DEEPSEEK_API_KEY
+# Check if your API key is set
+echo $DEEPSEEK_API_KEY
+
+# Or pass it directly
+deepseek --api-key="your_api_key" chat "Hello"
 ```
 
-**Node.js Version:**
+**Configuration File:**
 ```bash
-node --version  # Should be 18+
-npm update -g deepseek-cli
+# Create or edit your .deepseekrc file
+echo '{"apiKey": "your_api_key", "model": "deepseek-chat"}' > ~/.deepseekrc
 ```
 
-**Permission Errors:**
+**Model Not Found:**
 ```bash
-sudo npm install -g run-deepseek-cli
-# Or use a Node version manager like nvm
-```
+# List available models
+deepseek models
 
-For more troubleshooting help, see our [Troubleshooting Guide](./docs/troubleshooting.md).
+# Use a valid model
+deepseek --model deepseek-chat chat "Hello"
+```
 
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
-
-The use of DeepSeek Coder models is subject to the [DeepSeek Model License](https://github.com/deepseek-ai/deepseek-coder/blob/main/LICENSE-MODEL).
-
-## Citation
-
-If you use this tool in your research or projects, please cite:
-
-```bibtex
-@misc{deepseek-cli,
-  title={DeepSeek CLI: Command-Line AI Coding Assistant},
-  author={Your Name},
-  year={2025},
-  url={https://github.com/your-username/deepseek-cli}
-}
-
-@misc{deepseek-coder,
-  author={Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong, Wentao Zhang, Guanting Chen, Xiao Bi, Y. Wu, Y.K. Li, Fuli Luo, Yingfei Xiong, Wenfeng Liang},
-  title={DeepSeek-Coder: When the Large Language Model Meets Programming -- The Rise of Code Intelligence},
-  journal={CoRR},
-  volume={abs/2401.14196},
-  year={2024},
-  url={https://arxiv.org/abs/2401.14196}
-}
-```
 
 ## Contact & Support
 
@@ -384,6 +335,5 @@ If you use this tool in your research or projects, please cite:
 
 ## Acknowledgments
 
-- Built on the foundation of [Gemini CLI](https://github.com/google-gemini/gemini-cli)
-- Powered by [DeepSeek Coder](https://github.com/deepseek-ai/deepseek-coder) models
+- Powered by [DeepSeek](https://deepseek.com) models
 - Thanks to the open-source community for contributions and feedback

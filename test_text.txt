@@ -1,0 +1,13 @@
+This is a longer text file that we can use to test the token counter.
+It contains multiple lines and paragraphs to give a more realistic example.
+
+The DeepSeek V3 tokenizer is designed to efficiently tokenize text for use with the DeepSeek models.
+Tokenization is the process of converting text into tokens that the model can understand.
+Each token represents a piece of text, which could be a word, part of a word, or a punctuation mark.
+
+Understanding token counts is important for several reasons:
+1. API costs are based on the number of tokens processed
+2. Models have token limits for their context windows
+3. Optimizing token usage can improve performance and reduce costs
+
+This file should give us a good example of how the token counter works with longer texts.

@@ -21,6 +21,7 @@ out/
 .env.test.local
 .env.production
 .env.production.local
+.npmrc
 
 # IDE and Editor directories
 .vscode/
