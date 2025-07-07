@@ -10,6 +10,11 @@ export interface TokenUsage {
   estimatedCost: number;
 }
 
+interface Conversation {
+  role: string;
+  content: string;
+}
+
 export class DeepSeekAPI {
   constructor(private config: Config) {}
 
@@ -54,6 +59,64 @@ export class DeepSeekAPI {
       } else {
         // If the API doesn't return usage info, estimate it
         const tokenCount = await this.countTokens(prompt);
+        const outputTokenCount = await this.countTokens(content);
+        usage = {
+          promptTokens: tokenCount,
+          completionTokens: outputTokenCount,
+          totalTokens: tokenCount + outputTokenCount,
+          estimatedCost: await this.estimateCost(tokenCount, outputTokenCount)
+        };
+      }
+
+      return { content, usage };
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        throw new Error('Invalid API key. Please check your DEEPSEEK_API_KEY.');
+      }
+      if (error.response?.status === 429) {
+        throw new Error('Rate limit exceeded. Please try again later.');
+      }
+      if (error.response?.status === 400) {
+        console.error('API Error Details:', error.response?.data);
+        throw new Error(`Bad request: ${error.response?.data?.error?.message || 'Invalid request format'}`);
+      }
+      throw new Error(`API error: ${error.message}`);
+    }
+  }
+
+  async completeWithHistory(messages: Conversation[]): Promise<{ content: string, usage?: TokenUsage }> {
+    try {
+      const response = await axios.post(
+        this.config.apiUrl,
+        {
+          model: this.config.model,
+          messages: messages,
+          temperature: this.config.temperature,
+          max_tokens: this.config.maxTokens
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${this.config.apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          timeout: 60000  // 60 seconds
+        }
+      );
+
+      const content = response.data.choices[0].message.content;
+      let usage: TokenUsage | undefined;
+      
+      if (response.data.usage) {
+        usage = {
+          promptTokens: response.data.usage.prompt_tokens,
+          completionTokens: response.data.usage.completion_tokens,
+          totalTokens: response.data.usage.total_tokens,
+          estimatedCost: await this.estimateCost(response.data.usage.prompt_tokens, response.data.usage.completion_tokens)
+        };
+      } else {
+        // If the API doesn't return usage info, estimate it
+        const promptText = messages.map(m => m.content).join(' ');
+        const tokenCount = await this.countTokens(promptText);
         const outputTokenCount = await this.countTokens(content);
         usage = {
           promptTokens: tokenCount,
@@ -134,6 +197,83 @@ export class DeepSeekAPI {
         response.data.on('end', async () => {
           // Estimate token usage
           const promptTokens = await this.countTokens(prompt);
+          const completionTokens = await this.countTokens(fullContent);
+          const usage: TokenUsage = {
+            promptTokens,
+            completionTokens,
+            totalTokens: promptTokens + completionTokens,
+            estimatedCost: await this.estimateCost(promptTokens, completionTokens)
+          };
+          
+          resolve({ content: fullContent, usage });
+        });
+
+        response.data.on('error', (error: Error) => {
+          reject(error);
+        });
+      });
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        throw new Error('Invalid API key. Please check your DEEPSEEK_API_KEY.');
+      }
+      if (error.response?.status === 429) {
+        throw new Error('Rate limit exceeded. Please try again later.');
+      }
+      if (error.response?.status === 400) {
+        console.error('API Error Details:', error.response?.data);
+        throw new Error(`Bad request: ${error.response?.data?.error?.message || 'Invalid request format'}`);
+      }
+      throw new Error(`API error: ${error.message}`);
+    }
+  }
+
+  async completeStreamWithHistory(messages: Conversation[], onChunk: (chunk: string) => void): Promise<{ content: string, usage?: TokenUsage }> {
+    try {
+      const response = await axios.post(
+        this.config.apiUrl,
+        {
+          model: this.config.model,
+          messages: messages,
+          temperature: this.config.temperature,
+          max_tokens: this.config.maxTokens,
+          stream: true
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${this.config.apiKey}`,
+            'Content-Type': 'application/json',
+            'Accept': 'text/event-stream'
+          },
+          responseType: 'stream',
+          timeout: 120000  // 120 seconds for streaming
+        }
+      );
+
+      let fullContent = '';
+      
+      return new Promise((resolve, reject) => {
+        response.data.on('data', (chunk: Buffer) => {
+          try {
+            const lines = chunk.toString().split('\n');
+            for (const line of lines) {
+              if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+                const jsonData = JSON.parse(line.substring(6));
+                const content = jsonData.choices[0]?.delta?.content || '';
+                if (content) {
+                  fullContent += content;
+                  onChunk(content);
+                }
+              }
+            }
+          } catch (error) {
+            // Ignore parsing errors for incomplete chunks
+          }
+        });
+
+        response.data.on('end', async () => {
+          // Estimate token usage
+          const promptText = messages.map(m => m.content).join(' ');
+          const promptTokens = await this.countTokens(promptText);
           const completionTokens = await this.countTokens(fullContent);
           const usage: TokenUsage = {
             promptTokens,

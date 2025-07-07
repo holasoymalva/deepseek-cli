@@ -191,12 +191,6 @@ Focus on:
         }
         
         const config = this.buildConfig(this.program.opts());
-        
-        // Show welcome
-        console.log(chalk.cyan('\n🚀 DeepSeek CLI - MVP\n'));
-        console.log(chalk.gray('Model:'), chalk.white(config.model));
-        console.log(chalk.gray('Type "exit" or Ctrl+C to quit\n'));
-        
         await interactiveCommand(config);
       });
   }

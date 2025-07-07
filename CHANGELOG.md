@@ -2,6 +2,20 @@
 
 All notable changes to the DeepSeek CLI project will be documented in this file.
 
+## [0.3.5] - 2025-07-07
+
+### Added
+- Multi-turn conversation support in interactive mode
+- Conversation history tracking for context-aware responses
+- Enhanced interactive mode with slash commands (/help, /clear, /stats, /model, /exit)
+- Improved welcome message with command information
+- Better user guidance throughout the application
+
+### Changed
+- Updated interactive mode UI for better user experience
+- Improved help text with clearer instructions
+- Enhanced API to support conversation history
+
 ## [0.3.4] - 2025-07-07
 
 ### Added
