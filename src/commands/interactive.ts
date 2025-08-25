@@ -6,6 +6,26 @@ import { Config } from '../config';
 
 export async function interactiveCommand(config: Config): Promise<void> {
   const api = new DeepSeekAPI(config);
+  
+  // Check Ollama connection if using local mode
+  if (config.useLocal) {
+    const isConnected = await api.checkOllamaConnection();
+    if (!isConnected) {
+      console.log(chalk.red('⚠️  Cannot connect to Ollama at'), chalk.white(config.ollamaHost));
+      console.log(chalk.yellow('Make sure Ollama is running:'), chalk.white('ollama serve'));
+      console.log(chalk.yellow('Install the model:'), chalk.white(`ollama pull ${config.model}`));
+      console.log('');
+    } else {
+      console.log(chalk.green('✅ Connected to Ollama'));
+      const models = await api.listOllamaModels();
+      if (!models.includes(config.model)) {
+        console.log(chalk.yellow(`⚠️  Model '${config.model}' not found locally`));
+        console.log(chalk.yellow('Install it with:'), chalk.white(`ollama pull ${config.model}`));
+      }
+      console.log('');
+    }
+  }
+  
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,

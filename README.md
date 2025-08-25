@@ -19,35 +19,62 @@ With the DeepSeek CLI you can:
 
 ## Quickstart
 
-1. **Prerequisites:** Ensure you have [Node.js version 18](https://nodejs.org/en/download) or higher installed.
+### 🏠 Local Setup (Recommended - Free & Private)
 
-2. **Install the CLI:** Install globally using npm:
+1. **Prerequisites:** 
+   - [Node.js version 18](https://nodejs.org/en/download) or higher
+   - [Ollama](https://ollama.ai) for local AI models
 
+2. **Install Ollama:**
+   ```bash
+   # macOS
+   brew install ollama
+   
+   # Linux
+   curl -fsSL https://ollama.ai/install.sh | sh
+   
+   # Windows: Download from https://ollama.ai
+   ```
+
+3. **Install the CLI:**
    ```bash
    npm install -g run-deepseek-cli
+   ```
+
+4. **Setup Local Environment:**
+   ```bash
+   # Start Ollama service
+   ollama serve
+   
+   # Install DeepSeek Coder model (choose one)
+   ollama pull deepseek-coder:6.7b    # Recommended (4GB)
+   ollama pull deepseek-coder:1.3b    # Lightweight (1GB)
+   ollama pull deepseek-coder:33b     # Most capable (19GB)
+   ```
+
+5. **Start Using:**
+   ```bash
    deepseek
    ```
 
-   Or run directly without installation:
+### ☁️ Cloud Setup (Requires API Key)
 
+1. **Install the CLI:**
    ```bash
-   npx deepseek-cli
+   npm install -g run-deepseek-cli
    ```
 
-3. **Configure API Access:** Set up your DeepSeek API key:
-
+2. **Configure API Access:**
    ```bash
    export DEEPSEEK_API_KEY="your_api_key_here"
+   export DEEPSEEK_USE_LOCAL=false
    ```
-
    Get your API key from [DeepSeek Platform](https://platform.deepseek.com/api_keys).
 
-4. **Choose Your Model:** The CLI supports multiple DeepSeek Coder models:
-   - `deepseek-coder-33b-instruct` (Recommended for complex tasks)
-   - `deepseek-coder-6.7b-instruct` (Faster responses)
-   - `deepseek-coder-1.3b-instruct` (Lightweight option)
-
-You are now ready to use the DeepSeek CLI!
+3. **Start Using:**
+   ```bash
+   deepseek
+   ```
 
 ## Examples
 
@@ -162,25 +189,32 @@ Start by `cd`ing into an existing or newly-cloned repository and running `deepse
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `DEEPSEEK_API_KEY` | Your DeepSeek API key | Required |
-| `DEEPSEEK_MODEL` | Model to use | `deepseek-coder-33b-instruct` |
-| `DEEPSEEK_BASE_URL` | API base URL | `https://api.deepseek.com` |
-| `DEEPSEEK_MAX_TOKENS` | Maximum tokens per response | `4096` |
-| `DEEPSEEK_TEMPERATURE` | Response creativity (0.0-1.0) | `0.1` |
+| `DEEPSEEK_USE_LOCAL` | Use local Ollama instead of cloud API | `true` |
+| `DEEPSEEK_MODEL` | Model to use | `deepseek-coder:6.7b` |
+| `OLLAMA_HOST` | Ollama server URL | `http://localhost:11434` |
+| `DEEPSEEK_API_KEY` | DeepSeek API key (cloud mode only) | - |
+
+### Local Models Available
+
+| Model | Size | Memory | Best For |
+|-------|------|--------|----------|
+| `deepseek-coder:1.3b` | 1GB | 2GB RAM | Quick completions, lightweight tasks |
+| `deepseek-coder:6.7b` | 4GB | 8GB RAM | General coding, recommended |
+| `deepseek-coder:33b` | 19GB | 32GB RAM | Complex analysis, best quality |
 
 ### Configuration File
 
-Create a `.deepseek-cli.json` file in your project root or home directory:
+Create a `.env` file in your project root:
 
-```json
-{
-  "model": "deepseek-coder-6.7b-instruct",
-  "temperature": 0.1,
-  "maxTokens": 2048,
-  "includeSystemPrompt": true,
-  "autoSave": true,
-  "outputFormat": "markdown"
-}
+```bash
+# Local mode (default)
+DEEPSEEK_USE_LOCAL=true
+DEEPSEEK_MODEL=deepseek-coder:6.7b
+OLLAMA_HOST=http://localhost:11434
+
+# Cloud mode (optional)
+# DEEPSEEK_USE_LOCAL=false
+# DEEPSEEK_API_KEY=your_api_key_here
 ```
 
 ## Supported Programming Languages
@@ -203,14 +237,26 @@ For the complete list, see [Supported Languages](./docs/supported-languages.md).
 | Command | Description |
 |---------|-------------|
 | `deepseek` | Start interactive mode |
+| `deepseek setup` | Setup local Ollama environment |
+| `deepseek chat "prompt"` | Single prompt mode |
+| `deepseek --local` | Force local mode |
+| `deepseek --model <model>` | Specify model to use |
 | `deepseek --help` | Show help information |
 | `deepseek --version` | Show version |
-| `deepseek chat "prompt"` | Single prompt mode |
-| `deepseek complete <file>` | Code completion for file |
-| `deepseek review <file>` | Code review |
-| `deepseek explain <file>` | Explain code |
-| `deepseek test <file>` | Generate tests |
-| `deepseek docs <file>` | Generate documentation |
+
+### Setup Command
+
+The setup command helps you install and configure the local environment:
+
+```bash
+deepseek setup
+```
+
+This will:
+- Check if Ollama is installed
+- Start Ollama service if needed
+- Download the specified DeepSeek model
+- Verify everything is working
 
 ### Interactive Mode
 
