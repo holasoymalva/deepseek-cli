@@ -1,6 +1,6 @@
 {
   "name": "run-deepseek-cli",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "AI-powered coding assistant CLI using DeepSeek models with local Ollama support",
   "main": "dist/index.js",
   "bin": {
