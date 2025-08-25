@@ -17,7 +17,7 @@ export class CLI {
     this.program
       .name('deepseek')
       .description('AI-powered coding assistant with local Ollama support')
-      .version('0.1.0')
+      .version('1.1.0')
       .option('-k, --api-key <key>', 'DeepSeek API key (for cloud mode)')
       .option('-m, --model <model>', 'Model to use (e.g., deepseek-coder:6.7b for local)')
       .option('-l, --local', 'Force local mode using Ollama')
