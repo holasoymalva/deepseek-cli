@@ -73,7 +73,7 @@ With the DeepSeek CLI you can:
 
 3. **Start Using:**
    ```bash
-   deepseek
+   deepseek-cli
    ```
 
 ## Examples
