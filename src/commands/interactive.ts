@@ -42,6 +42,7 @@ export async function interactiveCommand(config: Config): Promise<void> {
     }
 
     if (trimmed) {
+      rl.pause();
       const spinner = ora('Thinking...').start();
       
       try {
@@ -51,6 +52,8 @@ export async function interactiveCommand(config: Config): Promise<void> {
       } catch (error) {
         spinner.stop();
         console.error(chalk.red('Error:'), error instanceof Error ? error.message : error);
+      } finally {
+        rl.resume();
       }
     }
     
