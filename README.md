@@ -53,7 +53,7 @@ With the DeepSeek CLI you can:
 
 5. **Start Using:**
    ```bash
-   deepseek
+   deepseek-cli
    ```
 
 ### ☁️ Cloud Setup (Requires API Key)
@@ -72,7 +72,7 @@ With the DeepSeek CLI you can:
 
 3. **Start Using:**
    ```bash
-   deepseek
+   deepseek-cli
    ```
 
 ## Examples
@@ -83,7 +83,7 @@ Once the CLI is running, you can start interacting with DeepSeek Coder from your
 
 ```sh
 cd new-project/
-deepseek
+deepseek-cli
 > Create a FastAPI web application with user authentication and a PostgreSQL database
 ```
 
@@ -92,19 +92,19 @@ deepseek
 ```sh
 git clone https://github.com/your-repo/existing-project
 cd existing-project
-deepseek
+deepseek-cli
 > Analyze this codebase and suggest performance optimizations
 ```
 
 ### Code Completion and Generation
 
 ```sh
-deepseek
+deepseek-cli
 > Write a Python function to implement binary search with proper error handling
 ```
 
 ```sh
-deepseek
+deepseek-cli
 > Convert this JavaScript function to TypeScript with proper type annotations
 ```
 
@@ -112,7 +112,7 @@ deepseek
 
 ### Explore and Understand Code
 
-Start by `cd`ing into an existing or newly-cloned repository and running `deepseek`.
+Start by `cd`ing into an existing or newly-cloned repository and running `deepseek-cli`.
 
 ```text
 > Explain the architecture of this application and identify the main components.
@@ -235,20 +235,20 @@ For the complete list, see [Supported Languages](./docs/supported-languages.md).
 
 | Command | Description |
 |---------|-------------|
-| `deepseek` | Start interactive mode |
-| `deepseek setup` | Setup local Ollama environment |
-| `deepseek chat "prompt"` | Single prompt mode |
-| `deepseek --local` | Force local mode |
-| `deepseek --model <model>` | Specify model to use |
-| `deepseek --help` | Show help information |
-| `deepseek --version` | Show version |
+| `deepseek-cli` | Start interactive mode |
+| `deepseek-cli setup` | Setup local Ollama environment |
+| `deepseek-cli chat "prompt"` | Single prompt mode |
+| `deepseek-cli --local` | Force local mode |
+| `deepseek-cli --model <model>` | Specify model to use |
+| `deepseek-cli --help` | Show help information |
+| `deepseek-cli --version` | Show version |
 
 ### Setup Command
 
 The setup command helps you install and configure the local environment:
 
 ```bash
-deepseek setup
+deepseek-cli setup
 ```
 
 This will:
@@ -275,11 +275,11 @@ DeepSeek CLI automatically analyzes your repository structure and includes relev
 
 ```bash
 # Analyze entire repository
-deepseek --include-all
+deepseek-cli --include-all
 > Suggest improvements for the overall code architecture
 
 # Include specific files/directories
-deepseek --include src/ tests/ README.md
+deepseek-cli --include src/ tests/ README.md
 > Update the documentation to reflect recent API changes
 ```
 
