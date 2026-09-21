@@ -1,6 +1,6 @@
 {
   "name": "run-deepseek-cli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "AI-powered coding assistant CLI using DeepSeek models with local Ollama support",
   "main": "dist/index.js",
   "bin": {
@@ -18,7 +18,7 @@
     "dev": "ts-node src/index.ts",
     "start": "node dist/index.js",
     "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "node test/bin.test.js",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
     "type-check": "tsc --noEmit"

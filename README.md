@@ -373,6 +373,24 @@ For more details about the models, visit the [DeepSeek Coder GitHub repository](
 
 ### Common Issues
 
+**`deepseek: command not found` after `npm install -g`:**
+
+`run-deepseek-cli@0.1.1` (npm `latest` before 1.1.1) only registered the `deepseek-cli` binary. This package now installs both `deepseek` and `deepseek-cli`.
+
+```bash
+npm install -g run-deepseek-cli@latest
+deepseek --help
+
+# If you are still on 0.1.1:
+deepseek-cli --help
+```
+
+If the binary exists but the shell still cannot find it, add the npm global bin directory to `PATH`:
+
+```bash
+export PATH="$(npm prefix -g)/bin:$PATH"
+```
+
 **API Key Issues:**
 ```bash
 export DEEPSEEK_API_KEY="your_actual_api_key"
@@ -381,8 +399,8 @@ export DEEPSEEK_API_KEY="your_actual_api_key"
 
 **Node.js Version:**
 ```bash
-node --version  # Should be 18+
-npm update -g deepseek-cli
+node --version  # Must be 18+
+npm install -g run-deepseek-cli@latest
 ```
 
 **Permission Errors:**
