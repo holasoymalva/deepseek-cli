@@ -388,7 +388,7 @@ deepseek-cli --help
 If the binary exists but the shell still cannot find it, add the npm global bin directory to `PATH`:
 
 ```bash
-export PATH="$(npm bin -g):$PATH"
+export PATH="$(npm prefix -g)/bin:$PATH"
 ```
 
 **API Key Issues:**
