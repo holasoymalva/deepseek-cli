@@ -38,7 +38,7 @@ export class DeepSeekAPI {
           headers: {
             'Content-Type': 'application/json'
           },
-          timeout: 120000  // 2 minutes for local processing
+          timeout: this.config.timeoutMs
         }
       );
 
@@ -78,14 +78,15 @@ export class DeepSeekAPI {
             }
           ],
           temperature: 0.1,
-          max_tokens: 4096
+          max_tokens: 4096,
+          stream: false
         },
         {
           headers: {
             'Authorization': `Bearer ${this.config.apiKey}`,
             'Content-Type': 'application/json'
           },
-          timeout: 30000
+          timeout: this.config.timeoutMs
         }
       );
 
@@ -100,6 +101,12 @@ export class DeepSeekAPI {
       if (error.response?.status === 400) {
         console.error('API Error Details:', error.response?.data);
         throw new Error(`Bad request: ${error.response?.data?.error?.message || 'Invalid request format'}`);
+      }
+      if (error.code === 'ECONNABORTED' || error.code === 'ERR_CANCELED' || error.message?.includes('aborted')) {
+        throw new Error(
+          `Request aborted after ${this.config.timeoutMs}ms. ` +
+          'The model may still be reasoning; increase DEEPSEEK_TIMEOUT_MS and try again.'
+        );
       }
       throw new Error(`API error: ${error.message}`);
     }
